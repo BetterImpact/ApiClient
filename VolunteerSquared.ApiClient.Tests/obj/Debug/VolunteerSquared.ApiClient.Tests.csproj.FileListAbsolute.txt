@@ -1,0 +1,12 @@
+C:\Users\pmcquay\Documents\Visual Studio 2015\Projects\VolunteerSquared.ApiClient\VolunteerSquared.ApiClient.Tests\obj\Debug\VolunteerSquared.ApiClient.Tests.csprojResolveAssemblyReference.cache
+C:\Users\pmcquay\Documents\Visual Studio 2015\Projects\VolunteerSquared.ApiClient\VolunteerSquared.ApiClient.Tests\bin\Debug\VolunteerSquared.ApiClient.Tests.dll
+C:\Users\pmcquay\Documents\Visual Studio 2015\Projects\VolunteerSquared.ApiClient\VolunteerSquared.ApiClient.Tests\bin\Debug\VolunteerSquared.ApiClient.Tests.pdb
+C:\Users\pmcquay\Documents\Visual Studio 2015\Projects\VolunteerSquared.ApiClient\VolunteerSquared.ApiClient.Tests\bin\Debug\Microsoft.VisualStudio.QualityTools.UnitTestFramework.dll
+C:\Users\pmcquay\Documents\Visual Studio 2015\Projects\VolunteerSquared.ApiClient\VolunteerSquared.ApiClient.Tests\bin\Debug\VolunteerSquared.ApiClient.dll
+C:\Users\pmcquay\Documents\Visual Studio 2015\Projects\VolunteerSquared.ApiClient\VolunteerSquared.ApiClient.Tests\bin\Debug\RestSharp.dll
+C:\Users\pmcquay\Documents\Visual Studio 2015\Projects\VolunteerSquared.ApiClient\VolunteerSquared.ApiClient.Tests\bin\Debug\Newtonsoft.Json.dll
+C:\Users\pmcquay\Documents\Visual Studio 2015\Projects\VolunteerSquared.ApiClient\VolunteerSquared.ApiClient.Tests\bin\Debug\VolunteerSquared.ApiClient.pdb
+C:\Users\pmcquay\Documents\Visual Studio 2015\Projects\VolunteerSquared.ApiClient\VolunteerSquared.ApiClient.Tests\bin\Debug\RestSharp.xml
+C:\Users\pmcquay\Documents\Visual Studio 2015\Projects\VolunteerSquared.ApiClient\VolunteerSquared.ApiClient.Tests\bin\Debug\Newtonsoft.Json.xml
+C:\Users\pmcquay\Documents\Visual Studio 2015\Projects\VolunteerSquared.ApiClient\VolunteerSquared.ApiClient.Tests\obj\Debug\VolunteerSquared.ApiClient.Tests.dll
+C:\Users\pmcquay\Documents\Visual Studio 2015\Projects\VolunteerSquared.ApiClient\VolunteerSquared.ApiClient.Tests\obj\Debug\VolunteerSquared.ApiClient.Tests.pdb

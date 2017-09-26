@@ -1,0 +1,12 @@
+C:\Users\pmcquay\Documents\Visual Studio 2015\Projects\VolunteerSquared.ApiClient\ExampleOrganizationConsumer\bin\Debug\ExampleOrganizationConsumer.exe.config
+C:\Users\pmcquay\Documents\Visual Studio 2015\Projects\VolunteerSquared.ApiClient\ExampleOrganizationConsumer\bin\Debug\ExampleOrganizationConsumer.exe
+C:\Users\pmcquay\Documents\Visual Studio 2015\Projects\VolunteerSquared.ApiClient\ExampleOrganizationConsumer\bin\Debug\ExampleOrganizationConsumer.pdb
+C:\Users\pmcquay\Documents\Visual Studio 2015\Projects\VolunteerSquared.ApiClient\ExampleOrganizationConsumer\bin\Debug\VolunteerSquared.ApiClient.dll
+C:\Users\pmcquay\Documents\Visual Studio 2015\Projects\VolunteerSquared.ApiClient\ExampleOrganizationConsumer\bin\Debug\RestSharp.dll
+C:\Users\pmcquay\Documents\Visual Studio 2015\Projects\VolunteerSquared.ApiClient\ExampleOrganizationConsumer\bin\Debug\Newtonsoft.Json.dll
+C:\Users\pmcquay\Documents\Visual Studio 2015\Projects\VolunteerSquared.ApiClient\ExampleOrganizationConsumer\bin\Debug\VolunteerSquared.ApiClient.pdb
+C:\Users\pmcquay\Documents\Visual Studio 2015\Projects\VolunteerSquared.ApiClient\ExampleOrganizationConsumer\bin\Debug\RestSharp.xml
+C:\Users\pmcquay\Documents\Visual Studio 2015\Projects\VolunteerSquared.ApiClient\ExampleOrganizationConsumer\bin\Debug\Newtonsoft.Json.xml
+C:\Users\pmcquay\Documents\Visual Studio 2015\Projects\VolunteerSquared.ApiClient\ExampleOrganizationConsumer\obj\Debug\ExampleOrganizationConsumer.csprojResolveAssemblyReference.cache
+C:\Users\pmcquay\Documents\Visual Studio 2015\Projects\VolunteerSquared.ApiClient\ExampleOrganizationConsumer\obj\Debug\ExampleOrganizationConsumer.exe
+C:\Users\pmcquay\Documents\Visual Studio 2015\Projects\VolunteerSquared.ApiClient\ExampleOrganizationConsumer\obj\Debug\ExampleOrganizationConsumer.pdb
