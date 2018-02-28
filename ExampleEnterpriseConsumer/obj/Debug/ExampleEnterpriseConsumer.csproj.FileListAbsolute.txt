@@ -10,3 +10,6 @@ C:\Users\pmcquay\Documents\Visual Studio 2015\Projects\VolunteerSquared.ApiClien
 C:\Users\pmcquay\Documents\Visual Studio 2015\Projects\VolunteerSquared.ApiClient\ExampleEnterpriseConsumer\obj\Debug\ExampleEnterpriseConsumer.csprojResolveAssemblyReference.cache
 C:\Users\pmcquay\Documents\Visual Studio 2015\Projects\VolunteerSquared.ApiClient\ExampleEnterpriseConsumer\obj\Debug\ExampleEnterpriseConsumer.exe
 C:\Users\pmcquay\Documents\Visual Studio 2015\Projects\VolunteerSquared.ApiClient\ExampleEnterpriseConsumer\obj\Debug\ExampleEnterpriseConsumer.pdb
+C:\Users\pmcquay\Documents\GitHub\Repositories\ApiClient\ExampleEnterpriseConsumer\bin\Debug\ExampleEnterpriseConsumer.exe.config
+C:\Users\pmcquay\Documents\GitHub\Repositories\ApiClient\ExampleEnterpriseConsumer\obj\Debug\ExampleEnterpriseConsumer.exe
+C:\Users\pmcquay\Documents\GitHub\Repositories\ApiClient\ExampleEnterpriseConsumer\obj\Debug\ExampleEnterpriseConsumer.pdb
