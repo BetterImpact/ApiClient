@@ -1,9 +1,0 @@
-C:\Users\pmcquay\Documents\Visual Studio 2015\Projects\VolunteerSquared.ApiClient\VolunteerSquared.ApiClient\obj\Debug\VolunteerSquared.ApiClient.csprojResolveAssemblyReference.cache
-C:\Users\pmcquay\Documents\Visual Studio 2015\Projects\VolunteerSquared.ApiClient\VolunteerSquared.ApiClient\bin\Debug\VolunteerSquared.ApiClient.dll
-C:\Users\pmcquay\Documents\Visual Studio 2015\Projects\VolunteerSquared.ApiClient\VolunteerSquared.ApiClient\bin\Debug\VolunteerSquared.ApiClient.pdb
-C:\Users\pmcquay\Documents\Visual Studio 2015\Projects\VolunteerSquared.ApiClient\VolunteerSquared.ApiClient\bin\Debug\Newtonsoft.Json.dll
-C:\Users\pmcquay\Documents\Visual Studio 2015\Projects\VolunteerSquared.ApiClient\VolunteerSquared.ApiClient\bin\Debug\RestSharp.dll
-C:\Users\pmcquay\Documents\Visual Studio 2015\Projects\VolunteerSquared.ApiClient\VolunteerSquared.ApiClient\bin\Debug\Newtonsoft.Json.xml
-C:\Users\pmcquay\Documents\Visual Studio 2015\Projects\VolunteerSquared.ApiClient\VolunteerSquared.ApiClient\bin\Debug\RestSharp.xml
-C:\Users\pmcquay\Documents\Visual Studio 2015\Projects\VolunteerSquared.ApiClient\VolunteerSquared.ApiClient\obj\Debug\VolunteerSquared.ApiClient.dll
-C:\Users\pmcquay\Documents\Visual Studio 2015\Projects\VolunteerSquared.ApiClient\VolunteerSquared.ApiClient\obj\Debug\VolunteerSquared.ApiClient.pdb
