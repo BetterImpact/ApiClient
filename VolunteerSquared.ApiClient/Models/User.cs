@@ -57,6 +57,8 @@ namespace VolunteerSquared.ApiClient.Models
         public string TwitterUsername { get; set; }
         [JsonProperty("linkedin_profile_url")]
         public string LinkedInProfileUrl { get; set; }
+        [JsonProperty("instagram_username")]
+        public string InstagramUserName { get; set; }
         [JsonProperty("username")]
         public string Username { get; set; }
         [JsonProperty("birthday")]
