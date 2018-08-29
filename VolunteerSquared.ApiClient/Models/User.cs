@@ -77,6 +77,8 @@ namespace VolunteerSquared.ApiClient.Models
         public string PhotoUrlScaled { get; set; }
         [JsonProperty("photo_url_original")]
         public string PhotoUrlOriginal { get; set; }
+        [JsonProperty("qr_code_url")]
+        public string QRCodeUrl { get; set; }
 
         [JsonProperty("memberships")]
         public IList<UserOrganizationMembership> Memberships { get; set; }
