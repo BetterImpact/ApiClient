@@ -50,6 +50,10 @@ namespace VolunteerSquared.ApiClient.Models
         public bool IsMember { get; set; }
         [JsonProperty("member_status")]
         public string MemberStatus { get; set; }
+        [JsonProperty("member_date_joined")]
+        public System.DateTime? MemberDateJoined { get; set; }
+        [JsonProperty("member_last_status_change")]
+        public System.DateTime? MemberLastStatusChange { get; set; }
 
         [JsonProperty("is_volunteer")]
         public bool IsVolunteer { get; set; }
