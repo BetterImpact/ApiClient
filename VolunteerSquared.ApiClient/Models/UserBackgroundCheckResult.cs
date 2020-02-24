@@ -25,5 +25,10 @@ namespace VolunteerSquared.ApiClient.Models
         public DateTime? EffectiveDate { get; set; }
         [JsonProperty("expiry_date")]
         public DateTime? ExpiryDate { get; set; }
+
+        [JsonProperty("is_manual_override")]
+        public Boolean IsManualOverride { get; set; }
+        [JsonProperty("manual_override_notes")]
+        public String ManualOverrideNotes { get; set; }
     }
 }
