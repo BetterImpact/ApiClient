@@ -25,6 +25,8 @@ namespace VolunteerSquared.ApiClient.Models
         public string Title { get; set; }
         [JsonProperty("suffix")]
         public string Suffix { get; set; }
+        [JsonProperty("pronouns")]
+        public string Pronouns { get; set; }
         [JsonProperty("address_line_1")]
         public string Address1 { get; set; }
         [JsonProperty("address_line_2")]
