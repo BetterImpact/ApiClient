@@ -13,7 +13,7 @@ namespace ExampleEnterpriseConsumer
         static void Main(string[] args)
         {
             //Initialize API client. Base URL shouldnt change, you will have to insert your own keys.
-            var client = new ApiClient("https://api.betterimpact.com/", "YOUR_API_USERNAME_HERE", "YOUR_API_PASSWORD_HERE");
+            var client = new Client("https://api.betterimpact.com/", "YOUR_API_USERNAME_HERE", "YOUR_API_PASSWORD_HERE");
 
             //Get a page of users, further pages can be accessed by changing the appropriate filter in the filter model.
             var users = client.ListEnterpriseUsers(new UsersFilterModelEnterprise() { PageSize = 25 /*you can put more filters in here.*/ });

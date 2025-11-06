@@ -1,16 +1,30 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using RestSharp;
 using RestSharp.Extensions;
 using System;
 using System.IO;
 using System.Linq;
 using System.Net.Http.Headers;
+using System.Runtime.InteropServices;
 using VolunteerSquared.ApiClient.Models;
 
 namespace VolunteerSquared.ApiClient
 {
     public static class RequestHelper
     {
+        private class RequireObjectPropertiesContractResolver : DefaultContractResolver
+        {
+            protected override JsonObjectContract CreateObjectContract(Type objectType)
+            {
+                var contract = base.CreateObjectContract(objectType);
+
+                contract.ItemRequired = Required.AllowNull; // Require all properties to be present, but allow null values
+
+                return contract;
+            }
+        }
+
         public static T ExecuteRequest<T> (IRestClient client, IRestRequest request) where T : new()
         {
             var response = client.Execute(request);
@@ -21,7 +35,15 @@ namespace VolunteerSquared.ApiClient
             }
             else
             {
-                return JsonConvert.DeserializeObject<T>(response.Content);
+                var settings = new JsonSerializerSettings();
+
+#if DEBUG
+                //if we're in debug mode, be strict about missing members in the json, and also missing members in objects
+                settings.ContractResolver = new RequireObjectPropertiesContractResolver();
+                settings.MissingMemberHandling = MissingMemberHandling.Error;
+#endif
+
+                return JsonConvert.DeserializeObject<T>(response.Content, settings);
             }
         }
 

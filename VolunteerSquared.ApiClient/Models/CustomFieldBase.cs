@@ -7,23 +7,22 @@ namespace VolunteerSquared.ApiClient.Models
     [Serializable()]
     [JsonConverter(typeof(PolymorphicClassConverter))]
     //this has to be here because otherwise the deserialization process tries to instantiate this class, which doesnt work.
-    public abstract class UserCustomFieldBase
+    public abstract class CustomFieldBase
     {
         [JsonProperty("custom_field_id")]
         public int CustomFieldId { get; set; }
-
-        [JsonProperty("custom_field_type")]
-        public string CustomFieldType { get; set; }
-
-        [JsonProperty("custom_field_name")]
-        public string CustomFieldName { get; set; }
+        [JsonProperty("name")]
+        public string Name { get; set; }
+        [JsonProperty("display_order")]
+        public int DisplayOrder { get; set; }
+        [JsonProperty("belongs_to_enterprise")]
+        public bool BelongsToEnterprise { get; set; }
 
         [JsonProperty("custom_field_category_id")]
         public int? CustomFieldCategoryId { get; set; }
         [JsonProperty("custom_field_category_name")]
         public string CustomFieldCategoryName { get; set; }
-
-        //TODO: more fields (permissions, displays on, modules, etc.)
+        [JsonProperty("custom_field_category_display_order")]
+        public int? CustomFieldCategoryDisplayOrder { get; set; }
     }
-
 }

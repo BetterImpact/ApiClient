@@ -36,6 +36,8 @@ namespace VolunteerSquared.ApiClient.Serialization
             dynamic jsonObject = JObject.Load(reader);
             dynamic returnObject = Activator.CreateInstance(nameToType[jsonObject["type"].Value as string]);
 
+            jsonObject.Remove("type");
+
             serializer.Populate(jsonObject.CreateReader(), returnObject);
 
             return returnObject;

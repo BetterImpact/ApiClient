@@ -63,6 +63,8 @@ namespace VolunteerSquared.ApiClient.Models
         public string InstagramUserName { get; set; }
         [JsonProperty("username")]
         public string Username { get; set; }
+        [JsonProperty("single_sign_on_enabled")]
+        public string SingleSignOnEnabled { get; set; }
         [JsonProperty("birthday")]
         public System.DateTime? Birthday { get; set; }
         [JsonProperty("date_created")]
@@ -70,7 +72,9 @@ namespace VolunteerSquared.ApiClient.Models
         [JsonProperty("date_updated")]
         public System.DateTime DateUpdated { get; set; }
         [JsonProperty("region")]
-        public string Language { get; set; }
+        public string Region { get; set; }
+        [JsonProperty("region_code")]
+        public string RegionCode { get; set; }
         [JsonProperty("is_group")]
         public bool IsGroup { get; set; }
         [JsonProperty("group_name")]

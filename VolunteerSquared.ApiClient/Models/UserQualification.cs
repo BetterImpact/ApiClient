@@ -17,6 +17,11 @@ namespace VolunteerSquared.ApiClient.Models
         [JsonProperty("qualification_expires")]
         public bool QualificationExpires { get; set; }
 
+        [JsonProperty("qualification_category_id")]
+        public int? QualificationCategoryId { get; set; }
+        [JsonProperty("qualification_category_name")]
+        public string QualificationCategoryName { get; set; }
+
         [JsonProperty("value")]
         public string Value { get; set; }
         [JsonProperty("value_id")]
