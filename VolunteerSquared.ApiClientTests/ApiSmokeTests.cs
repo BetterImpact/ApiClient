@@ -1,33 +1,38 @@
 using NUnit.Framework;
-using VolunteerSquared.ApiClient.Models;
-using VolunteerSquared.ApiClient;
+using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using VolunteerSquared.ApiClient;
+using VolunteerSquared.ApiClient.Models;
 
 namespace VolunteerSquared.ApiClientTests
 {
+    /// <summary>
+    /// One test per endpoint, run against a real account. Credentials come from TestConfiguration, and the ids the
+    /// tests need are looked up from the account rather than hard coded, so this runs against any account.
+    /// </summary>
     public class ApiSmokeTests
     {
-        private const string ApiBaseUrl = "https://api.betterimpact.com/";
-        
-        private const string OrgApiUsername = "YOUR_ORGANIZATION_API_USERNAME_HERE";
-        private const string OrgApiPassword = "YOUR_ORGANIZATION_API_PASSWORD_HERE";
-        private Client orgClient;
+        private Client organizationClient;
+        private Client enterpriseClient;
 
-        private const string EntApiUsername = "YOUR_ENTERPRISE_API_USERNAME_HERE";
-        private const string EntApiPassword = "YOUR_ENTERPRISE_API_PASSWORD_HERE";
-        private Client entClient;
-
-        [SetUp]
-        public void Setup()
+        private Client OrganizationClient
         {
-            orgClient = new Client(ApiBaseUrl, OrgApiUsername, OrgApiPassword);
-            entClient = new Client(ApiBaseUrl, EntApiUsername, EntApiPassword);
+            get { return organizationClient ?? (organizationClient = TestConfiguration.CreateOrganizationClient()); }
         }
+
+        private Client EnterpriseClient
+        {
+            get { return enterpriseClient ?? (enterpriseClient = TestConfiguration.CreateEnterpriseClient()); }
+        }
+
+        #region Enterprise
 
         [Test]
         public void CanGetSingleEnterpriseUser()
         {
-            var result = entClient.GetEnterpriseUser(1);
+            var result = EnterpriseClient.GetEnterpriseUser(SomeEnterpriseUserIds(1).First());
 
             Assert.IsNotNull(result);
             Assert.IsNotNull(result.Memberships);
@@ -39,7 +44,7 @@ namespace VolunteerSquared.ApiClientTests
         [Test]
         public void CanListEnterpriseUsers()
         {
-            var result = entClient.ListEnterpriseUsers();
+            var result = EnterpriseClient.ListEnterpriseUsers();
 
             Assert.IsNotNull(result);
             Assert.IsNotNull(result.Users);
@@ -49,7 +54,7 @@ namespace VolunteerSquared.ApiClientTests
         [Test]
         public void CanListEnterpriseUsersWithFilters()
         {
-            var result = entClient.ListEnterpriseUsers(new UsersFilterModelEnterprise() { PageNumber = 2, IncludeCustomFields=true, IncludeMemberships=true, IncludeQualifications=true, IncludeVerifiedVolunteersBackgroundCheckResults=true });
+            var result = EnterpriseClient.ListEnterpriseUsers(new UsersFilterModelEnterprise() { PageNumber = 0, PageSize = 10, IncludeCustomFields = true, IncludeMemberships = true, IncludeQualifications = true, IncludeVerifiedVolunteersBackgroundCheckResults = true });
 
             Assert.IsNotNull(result);
             Assert.IsNotNull(result.Users);
@@ -59,7 +64,7 @@ namespace VolunteerSquared.ApiClientTests
         [Test]
         public void CanListEnterpriseUsersByIdList()
         {
-            var result = entClient.GetEnterpriseUsersByIdList(new List<int> { 1, 2, 3 });
+            var result = EnterpriseClient.GetEnterpriseUsersByIdList(SomeEnterpriseUserIds(3));
 
             Assert.IsNotNull(result);
             Assert.IsNotNull(result.Users);
@@ -69,7 +74,7 @@ namespace VolunteerSquared.ApiClientTests
         [Test]
         public void CanListEnterpriseTimelogEntries()
         {
-            var result = entClient.ListEnterpriseTimelogEntries();
+            var result = EnterpriseClient.ListEnterpriseTimelogEntries();
 
             Assert.IsNotNull(result);
             Assert.IsNotNull(result.TimelogEntries);
@@ -79,17 +84,21 @@ namespace VolunteerSquared.ApiClientTests
         [Test]
         public void CanListEnterpriseTimelogEntriesWithFilter()
         {
-            var result = entClient.ListEnterpriseTimelogEntries(new TimelogFilterModelEnterprise() { FilterUserIds = new List<int> { 1,2 }, IncludeRecordedFeedbackFields=true });
+            //filter by people we already know have entries, otherwise there is nothing to assert on.
+            var userIds = SomeEnterpriseTimelogEntries(5).Select(entry => entry.UserId).Distinct().ToList();
+
+            var result = EnterpriseClient.ListEnterpriseTimelogEntries(new TimelogFilterModelEnterprise() { FilterUserIds = userIds, IncludeRecordedFeedbackFields = true });
 
             Assert.IsNotNull(result);
             Assert.IsNotNull(result.TimelogEntries);
             Assert.IsNotEmpty(result.TimelogEntries);
+            Assert.IsTrue(result.TimelogEntries.All(entry => userIds.Contains(entry.UserId)), "The user id filter let somebody else through.");
         }
 
         [Test]
         public void CanGetSingleEnterpriseTimelogEntry()
         {
-            var result = entClient.GetEnterpriseTimelogEntry(1);
+            var result = EnterpriseClient.GetEnterpriseTimelogEntry(SomeEnterpriseTimelogEntries(1).First().TimelogEntryId);
 
             Assert.IsNotNull(result);
         }
@@ -97,7 +106,7 @@ namespace VolunteerSquared.ApiClientTests
         [Test]
         public void CanGetEnterpriseTimelogEntriesByIdList()
         {
-            var result = entClient.GetEnterpriseTimelogEntriesByIdList(new List<int> { 1, 2, 3 });
+            var result = EnterpriseClient.GetEnterpriseTimelogEntriesByIdList(SomeEnterpriseTimelogEntries(3).Select(entry => entry.TimelogEntryId).ToList());
 
             Assert.IsNotNull(result);
             Assert.IsNotNull(result.TimelogEntries);
@@ -107,7 +116,7 @@ namespace VolunteerSquared.ApiClientTests
         [Test]
         public void CanLookupEnterpriseOrganizations()
         {
-            var result = entClient.LookupEnterpriseOrganizations();
+            var result = EnterpriseClient.LookupEnterpriseOrganizations();
 
             Assert.IsNotNull(result);
             Assert.IsNotNull(result.Organizations);
@@ -117,7 +126,7 @@ namespace VolunteerSquared.ApiClientTests
         [Test]
         public void CanLookupEnterpriseActivityReportGroups()
         {
-            var result = entClient.LookupEnterpriseActivityReportGroups();
+            var result = EnterpriseClient.LookupEnterpriseActivityReportGroups();
 
             Assert.IsNotNull(result);
             Assert.IsNotNull(result.ActivityReportGroups);
@@ -127,7 +136,7 @@ namespace VolunteerSquared.ApiClientTests
         [Test]
         public void CanLookupEnterpriseQualifications()
         {
-            var result = entClient.LookupEnterpriseQualifications();
+            var result = EnterpriseClient.LookupEnterpriseQualifications();
 
             Assert.IsNotNull(result);
             Assert.IsNotNull(result.Qualifications);
@@ -137,7 +146,7 @@ namespace VolunteerSquared.ApiClientTests
         [Test]
         public void CanLookupEnterpriseFeedbackFields()
         {
-            var result = entClient.LookupEnterpriseFeedbackFields();
+            var result = EnterpriseClient.LookupEnterpriseFeedbackFields();
 
             Assert.IsNotNull(result);
             Assert.IsNotNull(result.FeedbackFields);
@@ -147,20 +156,49 @@ namespace VolunteerSquared.ApiClientTests
         [Test]
         public void CanLookupEnterpriseCustomFields()
         {
-            var result = entClient.LookupEnterpriseCustomFields();
+            var result = EnterpriseClient.LookupEnterpriseCustomFields();
 
             Assert.IsNotNull(result);
             Assert.IsNotNull(result.CustomFields);
             Assert.IsNotEmpty(result.CustomFields);
         }
 
+        [Test]
+        public void CanDownloadEnterpriseUserTimeClockQRCode()
+        {
+            var user = EnterpriseClient.ListEnterpriseUsers(new UsersFilterModelEnterprise() { PageSize = 25 }).Users.FirstOrDefault(u => !string.IsNullOrEmpty(u.TimeClockQRCodeUrl));
 
+            //single sign on users do not get a qr code, so an account that only uses sso has nothing to test with.
+            if (user == null)
+            {
+                Assert.Ignore("None of the users on the first page have a time clock qr code.");
+            }
 
+            //the qr code response does not name the file, so a complete path has to be given.
+            var savePath = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString("n") + ".png");
+
+            try
+            {
+                var result = EnterpriseClient.DownloadUserTimeClockQRCode(user, savePath);
+
+                Assert.AreEqual(savePath, result);
+                Assert.IsTrue(File.Exists(result));
+                Assert.Greater(new FileInfo(result).Length, 0);
+            }
+            finally
+            {
+                File.Delete(savePath);
+            }
+        }
+
+        #endregion
+
+        #region Organization
 
         [Test]
         public void CanGetSingleOrganizationUser()
         {
-            var result = orgClient.GetOrganizationUser(1);
+            var result = OrganizationClient.GetOrganizationUser(SomeOrganizationUserIds(1).First());
 
             Assert.IsNotNull(result);
             Assert.IsNotNull(result.Memberships);
@@ -172,7 +210,7 @@ namespace VolunteerSquared.ApiClientTests
         [Test]
         public void CanListOrganizationUsers()
         {
-            var result = orgClient.ListOrganizationUsers();
+            var result = OrganizationClient.ListOrganizationUsers();
 
             Assert.IsNotNull(result);
             Assert.IsNotNull(result.Users);
@@ -182,7 +220,7 @@ namespace VolunteerSquared.ApiClientTests
         [Test]
         public void CanListOrganizationUsersWithFilters()
         {
-            var result = orgClient.ListOrganizationUsers(new UsersFilterModelOrganization() { PageNumber = 2, IncludeCustomFields=true, IncludeMemberships=true, IncludeQualifications=true, IncludeVerifiedVolunteersBackgroundCheckResults=true });
+            var result = OrganizationClient.ListOrganizationUsers(new UsersFilterModelOrganization() { PageNumber = 0, PageSize = 10, IncludeCustomFields = true, IncludeMemberships = true, IncludeQualifications = true, IncludeVerifiedVolunteersBackgroundCheckResults = true });
 
             Assert.IsNotNull(result);
             Assert.IsNotNull(result.Users);
@@ -192,7 +230,7 @@ namespace VolunteerSquared.ApiClientTests
         [Test]
         public void CanListOrganizationUsersByIdList()
         {
-            var result = orgClient.GetOrganizationUsersByIdList(new List<int> { 1, 2, 3 });
+            var result = OrganizationClient.GetOrganizationUsersByIdList(SomeOrganizationUserIds(3));
 
             Assert.IsNotNull(result);
             Assert.IsNotNull(result.Users);
@@ -202,7 +240,7 @@ namespace VolunteerSquared.ApiClientTests
         [Test]
         public void CanListOrganizationTimelogEntries()
         {
-            var result = orgClient.ListOrganizationTimelogEntries();
+            var result = OrganizationClient.ListOrganizationTimelogEntries();
 
             Assert.IsNotNull(result);
             Assert.IsNotNull(result.TimelogEntries);
@@ -212,17 +250,21 @@ namespace VolunteerSquared.ApiClientTests
         [Test]
         public void CanListOrganizationTimelogEntriesWithFilter()
         {
-            var result = orgClient.ListOrganizationTimelogEntries(new TimelogFilterModelOrganization() { FilterUserIds = new List<int> { 1, 2 }, IncludeRecordedFeedbackFields = true });
+            //filter by people we already know have entries, otherwise there is nothing to assert on.
+            var userIds = SomeOrganizationTimelogEntries(5).Select(entry => entry.UserId).Distinct().ToList();
+
+            var result = OrganizationClient.ListOrganizationTimelogEntries(new TimelogFilterModelOrganization() { FilterUserIds = userIds, IncludeRecordedFeedbackFields = true });
 
             Assert.IsNotNull(result);
             Assert.IsNotNull(result.TimelogEntries);
             Assert.IsNotEmpty(result.TimelogEntries);
+            Assert.IsTrue(result.TimelogEntries.All(entry => userIds.Contains(entry.UserId)), "The user id filter let somebody else through.");
         }
 
         [Test]
         public void CanGetSingleOrganizationTimelogEntry()
         {
-            var result = orgClient.GetOrganizationTimelogEntry(1);
+            var result = OrganizationClient.GetOrganizationTimelogEntry(SomeOrganizationTimelogEntries(1).First().TimelogEntryId);
 
             Assert.IsNotNull(result);
         }
@@ -230,7 +272,7 @@ namespace VolunteerSquared.ApiClientTests
         [Test]
         public void CanGetOrganizationTimelogEntriesByIdList()
         {
-            var result = orgClient.GetOrganizationTimelogEntriesByIdList(new List<int> { 1, 2, 3 });
+            var result = OrganizationClient.GetOrganizationTimelogEntriesByIdList(SomeOrganizationTimelogEntries(3).Select(entry => entry.TimelogEntryId).ToList());
 
             Assert.IsNotNull(result);
             Assert.IsNotNull(result.TimelogEntries);
@@ -240,7 +282,7 @@ namespace VolunteerSquared.ApiClientTests
         [Test]
         public void CanLookupOrganizationActivityCategories()
         {
-            var result = orgClient.LookupOrganizationActivityCategories();
+            var result = OrganizationClient.LookupOrganizationActivityCategories();
 
             Assert.IsNotNull(result);
             Assert.IsNotNull(result.ActivityCategories);
@@ -250,7 +292,7 @@ namespace VolunteerSquared.ApiClientTests
         [Test]
         public void CanLookupOrganizationQualifications()
         {
-            var result = orgClient.LookupOrganizationQualifications();
+            var result = OrganizationClient.LookupOrganizationQualifications();
 
             Assert.IsNotNull(result);
             Assert.IsNotNull(result.Qualifications);
@@ -260,7 +302,7 @@ namespace VolunteerSquared.ApiClientTests
         [Test]
         public void CanLookupOrganizationFeedbackFields()
         {
-            var result = orgClient.LookupOrganizationFeedbackFields();
+            var result = OrganizationClient.LookupOrganizationFeedbackFields();
 
             Assert.IsNotNull(result);
             Assert.IsNotNull(result.FeedbackFields);
@@ -270,11 +312,118 @@ namespace VolunteerSquared.ApiClientTests
         [Test]
         public void CanLookupOrganizationCustomFields()
         {
-            var result = orgClient.LookupOrganizationCustomFields();
+            var result = OrganizationClient.LookupOrganizationCustomFields();
 
             Assert.IsNotNull(result);
             Assert.IsNotNull(result.CustomFields);
             Assert.IsNotEmpty(result.CustomFields);
         }
+
+        [Test]
+        public void CanDownloadOrganizationUserTimeClockQRCode()
+        {
+            var user = OrganizationClient.ListOrganizationUsers(new UsersFilterModelOrganization() { PageSize = 25 }).Users.FirstOrDefault(u => !string.IsNullOrEmpty(u.TimeClockQRCodeUrl));
+
+            //single sign on users do not get a qr code, so an account that only uses sso has nothing to test with.
+            if (user == null)
+            {
+                Assert.Ignore("None of the users on the first page have a time clock qr code.");
+            }
+
+            //the qr code response does not name the file, so a complete path has to be given.
+            var savePath = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString("n") + ".png");
+
+            try
+            {
+                var result = OrganizationClient.DownloadUserTimeClockQRCode(user, savePath);
+
+                Assert.AreEqual(savePath, result);
+                Assert.IsTrue(File.Exists(result));
+                Assert.Greater(new FileInfo(result).Length, 0);
+            }
+            finally
+            {
+                File.Delete(savePath);
+            }
+        }
+
+        #endregion
+
+        #region Finding something in the account to test with
+
+        private List<int> SomeOrganizationUserIds(int howMany)
+        {
+            var users = OrganizationClient.ListOrganizationUsers(BareUserList(howMany)).Users;
+
+            if (!users.Any())
+            {
+                Assert.Ignore("The organization has no users to test with.");
+            }
+
+            return users.Select(user => user.UserId).ToList();
+        }
+
+        private List<int> SomeEnterpriseUserIds(int howMany)
+        {
+            var users = EnterpriseClient.ListEnterpriseUsers(BareEnterpriseUserList(howMany)).Users;
+
+            if (!users.Any())
+            {
+                Assert.Ignore("The enterprise has no users to test with.");
+            }
+
+            return users.Select(user => user.UserId).ToList();
+        }
+
+        private List<Timelog> SomeOrganizationTimelogEntries(int howMany)
+        {
+            var entries = OrganizationClient.ListOrganizationTimelogEntries(new TimelogFilterModelOrganization() { PageSize = howMany }).TimelogEntries;
+
+            if (!entries.Any())
+            {
+                Assert.Ignore("The organization has no timelog entries to test with.");
+            }
+
+            return entries.ToList();
+        }
+
+        private List<Timelog> SomeEnterpriseTimelogEntries(int howMany)
+        {
+            var entries = EnterpriseClient.ListEnterpriseTimelogEntries(new TimelogFilterModelEnterprise() { PageSize = howMany }).TimelogEntries;
+
+            if (!entries.Any())
+            {
+                Assert.Ignore("The enterprise has no timelog entries to test with.");
+            }
+
+            return entries.ToList();
+        }
+
+        private static UsersFilterModelOrganization BareUserList(int howMany)
+        {
+            //we only want ids here, so leave the expensive parts of the user record out.
+            return new UsersFilterModelOrganization()
+            {
+                PageSize = howMany,
+                IncludeCustomFields = false,
+                IncludeMemberships = false,
+                IncludeQualifications = false,
+                IncludeVerifiedVolunteersBackgroundCheckResults = false
+            };
+        }
+
+        private static UsersFilterModelEnterprise BareEnterpriseUserList(int howMany)
+        {
+            return new UsersFilterModelEnterprise()
+            {
+                PageSize = howMany,
+                IncludeCustomFields = false,
+                IncludeMemberships = false,
+                IncludeQualifications = false,
+                IncludeVerifiedVolunteersBackgroundCheckResults = false
+            };
+        }
+
+        #endregion
     }
 }

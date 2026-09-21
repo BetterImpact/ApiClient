@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copy this file to local.runsettings, fill in the values, and run:
+
+      dotnet test VolunteerSquared.ApiClientTests -s local.runsettings
+
+  local.runsettings is gitignored, so the keys stay on your machine. You can use the environment variables
+  VS_API_BASE_URL, VS_ORG_API_USERNAME, VS_ORG_API_PASSWORD, VS_ENT_API_USERNAME and VS_ENT_API_PASSWORD instead
+  if you prefer.
+
+  Leave a username and password empty to skip that scope: those tests report as ignored rather than failing.
+  Every endpoint the tests touch is a GET, so nothing in the account is changed.
+-->
+<RunSettings>
+  <TestRunParameters>
+    <Parameter name="ApiBaseUrl" value="https://api.betterimpact.com/" />
+
+    <Parameter name="OrganizationApiUsername" value="" />
+    <Parameter name="OrganizationApiPassword" value="" />
+
+    <Parameter name="EnterpriseApiUsername" value="" />
+    <Parameter name="EnterpriseApiPassword" value="" />
+  </TestRunParameters>
+</RunSettings>

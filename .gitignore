@@ -318,3 +318,7 @@ ASALocalRun/
 
 # MSBuild Binary and Structured Log
 *.binlog
+
+# Local api credentials for the test project. Never commit these.
+local.runsettings
+*.local.runsettings
