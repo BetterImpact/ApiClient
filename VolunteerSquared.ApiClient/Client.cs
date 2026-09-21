@@ -227,6 +227,29 @@ namespace VolunteerSquared.ApiClient
             return RequestHelper.ExecuteFileDownloadRequest(RestClient, request, savePath);
         }
 
+        /// <summary>
+        /// Downloads the time clock qr code image for a user.
+        /// </summary>
+        /// <param name="savePath">
+        /// A complete file path, or a folder. The qr code endpoint does not tell us what the image is called, so when a
+        /// folder is given the file is named after the user id.
+        /// </param>
+        /// <remarks>
+        /// Users who sign in with single sign on do not get a qr code, because they cannot use it to sign in to the
+        /// time clock. Their TimeClockQRCodeUrl comes back empty, so check it before calling this.
+        /// </remarks>
+        public string DownloadUserTimeClockQRCode(User user, string savePath)
+        {
+            if (string.IsNullOrEmpty(user.TimeClockQRCodeUrl))
+            {
+                throw new ArgumentException("This user does not have a time clock qr code.", nameof(user));
+            }
+
+            var request = new RestRequest(user.TimeClockQRCodeUrl, Method.GET);
+
+            return RequestHelper.ExecuteFileDownloadRequest(RestClient, request, savePath, string.Format("timeclock-qr-code-{0}.png", user.UserId));
+        }
+
         public string DownloadUserPhoto(User user, string savePath)
         {
             var request = new RestRequest(user.PhotoUrlOriginal, Method.GET);
@@ -242,6 +265,20 @@ namespace VolunteerSquared.ApiClient
         }
 
         #endregion
+
+        /// <summary>
+        /// Formats a date the way the api wants it: iso 8601, with a timezone on it.
+        /// </summary>
+        /// <remarks>
+        /// Always sent as UTC. The api rejects a date with no timezone at all, and its worked_from and worked_to
+        /// filters currently fail on a date carrying an offset rather than a "Z", so UTC is the one form every
+        /// filter accepts. A date with no Kind set is taken to be local time, which is what .net does everywhere
+        /// else.
+        /// </remarks>
+        private static string FormatDateForApi(DateTime date)
+        {
+            return date.ToUniversalTime().ToString("o", CultureInfo.InvariantCulture);
+        }
 
         private void ApplyUsersFilterModelToRequest(IRestRequest request, UsersFilterModelBase filterModel)
         {
@@ -262,7 +299,7 @@ namespace VolunteerSquared.ApiClient
 
             if (filterModel.UpdatedSince.HasValue)
             {
-                request.AddQueryParameter("updated_since", filterModel.UpdatedSince.Value.ToString("o", CultureInfo.CurrentCulture));
+                request.AddQueryParameter("updated_since", FormatDateForApi(filterModel.UpdatedSince.Value));
             }
 
             if (filterModel.HasModules)
@@ -320,6 +357,7 @@ namespace VolunteerSquared.ApiClient
             }
 
             request.AddQueryParameter("include_recorded_feedback_fields", filterModel.IncludeRecordedFeedbackFields.ToString());
+            request.AddQueryParameter("approved", filterModel.FilterApprovedStatusString);
 
             if (filterModel.HasFilterUserIds)
             {
@@ -343,27 +381,27 @@ namespace VolunteerSquared.ApiClient
 
             if (filterModel.UpdatedSince.HasValue)
             {
-                request.AddQueryParameter("updated_since", filterModel.UpdatedSince.Value.ToString("o", CultureInfo.CurrentCulture));
+                request.AddQueryParameter("updated_since", FormatDateForApi(filterModel.UpdatedSince.Value));
             }
 
             if (filterModel.CreatedFrom.HasValue)
             {
-                request.AddQueryParameter("created_from", filterModel.CreatedFrom.Value.ToString("o", CultureInfo.CurrentCulture));
+                request.AddQueryParameter("created_from", FormatDateForApi(filterModel.CreatedFrom.Value));
             }
 
             if (filterModel.CreatedTo.HasValue)
             {
-                request.AddQueryParameter("created_to", filterModel.CreatedTo.Value.ToString("o", CultureInfo.CurrentCulture));
+                request.AddQueryParameter("created_to", FormatDateForApi(filterModel.CreatedTo.Value));
             }
 
             if (filterModel.WorkedFrom.HasValue)
             {
-                request.AddQueryParameter("worked_from", filterModel.WorkedFrom.Value.ToString("o", CultureInfo.CurrentCulture));
+                request.AddQueryParameter("worked_from", FormatDateForApi(filterModel.WorkedFrom.Value));
             }
 
             if (filterModel.WorkedTo.HasValue)
             {
-                request.AddQueryParameter("worked_to", filterModel.WorkedTo.Value.ToString("o", CultureInfo.CurrentCulture));
+                request.AddQueryParameter("worked_to", FormatDateForApi(filterModel.WorkedTo.Value));
             }
         }
 

@@ -26,13 +26,16 @@ namespace VolunteerSquared.ApiClient.Models
         public DateTime DateWorked { get; set; }
 
         [JsonProperty("hours_worked")]
-        public float HoursWorked { get; set; }
+        public double HoursWorked { get; set; }
 
         [JsonProperty("approved")]
         public bool Approved { get; set; }
 
         [JsonProperty("clock_start_time")]
         public DateTime? ClockStartTime { get; set; }
+
+        [JsonProperty("time_clock_auto_stopped")]
+        public bool TimeClockAutoStopped { get; set; }
 
         [JsonProperty("activity_id")]
         public int ActivityId { get; set; }
@@ -41,7 +44,7 @@ namespace VolunteerSquared.ApiClient.Models
         public string ActivityName { get; set; }
 
         [JsonProperty("activity_category_id")]
-        public int ActivityCategoryId { get; set; }
+        public int? ActivityCategoryId { get; set; }
 
         [JsonProperty("activity_category_name")]
         public string ActivityCategoryName { get; set; }

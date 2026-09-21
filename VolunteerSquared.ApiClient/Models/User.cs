@@ -64,7 +64,7 @@ namespace VolunteerSquared.ApiClient.Models
         [JsonProperty("username")]
         public string Username { get; set; }
         [JsonProperty("single_sign_on_enabled")]
-        public string SingleSignOnEnabled { get; set; }
+        public bool SingleSignOnEnabled { get; set; }
         [JsonProperty("birthday")]
         public System.DateTime? Birthday { get; set; }
         [JsonProperty("date_created")]

@@ -13,7 +13,8 @@ namespace VolunteerSquared.ApiClient.Models
         public int PageNumber { get; set; }
         public bool IncludeRecordedFeedbackFields { get; set; }
 
-        public ApprovedStatus FilterApprovedStatus { get; set; } = ApprovedStatus.DontFilter;
+        //matches what the api does when no approved filter is sent.
+        public ApprovedStatus FilterApprovedStatus { get; set; } = ApprovedStatus.ApprovedOnly;
 
         internal string FilterApprovedStatusString 
         {

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace VolunteerSquared.ApiClient
 {
-    class ApiException: Exception
+    public class ApiException: Exception
     {
         public readonly HttpStatusCode StatusCode;
 
